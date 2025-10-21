@@ -2,7 +2,7 @@
 
 ## 🔗 Links
 - **Demo Video**: [Watch on YouTube](https://youtu.be/jcXSSktidgY)
-- **Live Project**: [View on Vercel](https://store-app-rishabh07code.vercel.app)
+- **Live Project**: [View Live](https://shop-app-kohl-six.vercel.app/)
 
 ##  Project Summary
 
