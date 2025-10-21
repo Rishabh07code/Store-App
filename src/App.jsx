@@ -66,9 +66,34 @@ const useSortableData = (items, config = null) => {
 
 // --- Main App Component ---
 export default function App() {
-  const [users, setUsers] = useState(initialUsers)
-  const [stores, setStores] = useState(initialStores)
-  const [ratings, setRatings] = useState(initialRatings)
+  // Initialize from localStorage when available to persist demo data across reloads
+  const loadJson = (key, fallback) => {
+    try {
+      const raw = localStorage.getItem(key)
+      return raw ? JSON.parse(raw) : fallback
+    } catch (e) {
+      console.error('Failed to parse localStorage key', key, e)
+      return fallback
+    }
+  }
+
+  const [users, _setUsers] = useState(() => loadJson('sr_users', initialUsers))
+  const [stores, _setStores] = useState(() => loadJson('sr_stores', initialStores))
+  const [ratings, _setRatings] = useState(() => loadJson('sr_ratings', initialRatings))
+
+  // wrappers to persist state when updated
+  const setUsers = (next) => {
+    _setUsers(next)
+    try { localStorage.setItem('sr_users', JSON.stringify(next)) } catch (e) { console.error(e) }
+  }
+  const setStores = (next) => {
+    _setStores(next)
+    try { localStorage.setItem('sr_stores', JSON.stringify(next)) } catch (e) { console.error(e) }
+  }
+  const setRatings = (next) => {
+    _setRatings(next)
+    try { localStorage.setItem('sr_ratings', JSON.stringify(next)) } catch (e) { console.error(e) }
+  }
   const [loggedInUser, setLoggedInUser] = useState(null)
   const [currentView, setCurrentView] = useState('role-selection')
   const [selectedRole, setSelectedRole] = useState(null)
