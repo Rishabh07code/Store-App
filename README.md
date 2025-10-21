@@ -15,3 +15,10 @@ Open the URL printed by Vite (usually http://localhost:5173) in the browser.
 Notes:
 - Tailwind is loaded via CDN in `index.html` for quick styling in dev. For production, install and configure Tailwind properly.
 - This is a local demo using in-memory data only (no backend or persistence).
+
+Admin credentials for the demo app:
+
+- Email: RKADD@gmail.com
+- Password: RKADD@147852369
+
+See `ADMIN_CREDENTIALS.md` for more details.
