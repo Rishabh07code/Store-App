@@ -1,0 +1,16 @@
+# Enforce consistent line endings for text files
+* text=auto eol=lf
+
+# Treat these as binary
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.zip binary
+*.exe binary
+
+# Node lockfiles
+package-lock.json text eol=lf
+
+# Prevent dist from being messed with
+dist/** export-ignore
