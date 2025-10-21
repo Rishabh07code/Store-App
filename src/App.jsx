@@ -193,6 +193,51 @@ const RoleSelectionScreen = ({ onRoleSelect }) => {
 }
 
 const AdminDashboard = ({ users, setUsers, stores, setStores, ratings, adminId }) => {
+  // --- Add User Form available only to admin ---
+  const AddUserForm = ({ users, setUsers }) => {
+    const [form, setForm] = useState({ name: '', email: '', address: '', role: 'Normal User', password: '' })
+    const [error, setError] = useState('')
+    const handleChange = (e) => setForm({ ...form, [e.target.name]: e.target.value })
+
+    const reset = () => setForm({ name: '', email: '', address: '', role: 'Normal User', password: '' })
+
+    const handleSubmit = (e) => {
+      e.preventDefault()
+      setError('')
+      // Basic validation
+      if (form.name.trim().length < 3) return setError('Name must be at least 3 characters')
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) return setError('Invalid email')
+      if (users.some(u => u.email.toLowerCase() === form.email.toLowerCase())) return setError('An account with this email already exists.')
+      if (!/^(?=.*[A-Z])(?=.*[!@#$%^&*]).{8,16}$/.test(form.password)) return setError('Password must be 8-16 chars with one uppercase and one special char')
+
+      const nextId = users.length > 0 ? Math.max(...users.map(u => u.id)) + 1 : 1
+      const newUser = { id: nextId, name: form.name.trim(), email: form.email.trim(), address: form.address.trim(), role: form.role, password: form.password }
+      setUsers([...users, newUser])
+      reset()
+      alert('User added successfully')
+    }
+
+    return (
+      <Card className="mb-6">
+        <h3 className="text-xl font-bold mb-3">Add New User</h3>
+        {error && <p className="text-red-600 text-sm mb-2">{error}</p>}
+        <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-3">
+          <div><Label htmlFor="au_name">Full Name</Label><Input id="au_name" name="name" value={form.name} onChange={handleChange} required /></div>
+          <div><Label htmlFor="au_email">Email</Label><Input id="au_email" name="email" type="email" value={form.email} onChange={handleChange} required /></div>
+          <div><Label htmlFor="au_address">Address</Label><Input id="au_address" name="address" value={form.address} onChange={handleChange} /></div>
+          <div><Label htmlFor="au_role">Role</Label>
+            <select id="au_role" name="role" value={form.role} onChange={handleChange} className="w-full px-4 py-2 bg-white/80 border border-slate-300 rounded-lg">
+              <option>Normal User</option>
+              <option>Store Owner</option>
+              <option>System Administrator</option>
+            </select>
+          </div>
+          <div><Label htmlFor="au_password">Password</Label><Input id="au_password" name="password" type="password" value={form.password} onChange={handleChange} required /></div>
+          <div className="flex items-end"><Button type="submit" className="w-full">Add User</Button></div>
+        </form>
+      </Card>
+    )
+  }
   const { items: sortedUsers, requestSort: requestUserSort, sortConfig: userSortConfig } = useSortableData(users)
   const { items: sortedStores, requestSort: requestStoreSort, sortConfig: storeSortConfig } = useSortableData(stores)
 
@@ -232,6 +277,9 @@ const AdminDashboard = ({ users, setUsers, stores, setStores, ratings, adminId }
         <Card><div className="flex items-center"><div className="text-3xl mr-4">🏠</div><div><h3 className="text-xl font-bold text-slate-600">Total Stores</h3><p className="text-3xl mt-1 font-semibold">{stores.length}</p></div></div></Card>
         <Card><div className="flex items-center"><div className="text-3xl mr-4">⭐</div><div><h3 className="text-xl font-bold text-slate-600">Total Ratings</h3><p className="text-3xl mt-1 font-semibold">{ratings.length}</p></div></div></Card>
       </div>
+
+      {/* Admin-only actions: Add user form */}
+      <AddUserForm users={users} setUsers={setUsers} />
 
       <Card>
         <h2 className="text-2xl font-bold mb-4 text-slate-700">Manage Users</h2>
