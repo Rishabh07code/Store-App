@@ -1,5 +1,9 @@
 ﻿#  StoreRating App
 
+## 🔗 Links
+- **Demo Video**: [Watch on YouTube](https://youtu.be/jcXSSktidgY)
+- **Live Project**: [View on Vercel](https://store-app-rishabh07code.vercel.app)
+
 ##  Project Summary
 
 This project is a Full Stack Web Application built using React.js (frontend), Express.js/NestJS/Loopback (backend), and PostgreSQL/MySQL (database).
